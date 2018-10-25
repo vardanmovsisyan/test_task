@@ -10,6 +10,11 @@ import Register from './components/Register';
 import MyHeader from './components/HeaderComponent';
 import Home from './components/Home';
 import VerifyUsers from './components/VerifyUsers';
+import bAlert from 'bootstrap-vue/es/components/alert/alert';
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue);
+
 const axios = require('axios');
 
 const routes = [
@@ -24,6 +29,6 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    components:{MyHeader,VerifyUsers,Home}
+    components:{MyHeader,VerifyUsers,Home,bAlert}
 
 });

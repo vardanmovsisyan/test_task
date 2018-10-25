@@ -2,13 +2,32 @@
     <div class="main_div">
         <h1>Creative SignUp Form</h1>
         <div class="main-agileinfo">
+            <b-alert variant="danger"
+                     dismissible
+                     fade
+                     :show="showDismissibleAlert"
+                     @dismissed="showDismissibleAlert=false">
+                {{alertText}}
+            </b-alert>
             <div class="agileits-top">
-                <form action="/register/store" method="post">
+                <form action="/register/store" method="post" @submit.prevent="validateInputs()" ref="regForm">
                     <input type="hidden" name="_token" :value="csrf">
-                    <input class="text" type="text" name="username" placeholder="Username" required="required">
-                    <input class="text email" type="email" name="email" placeholder="Email" required="required">
-                    <input class="text" type="password" name="password" placeholder="Password" required="required">
-                    <input class="text w3lpass" type="password" name="password_confirmation" placeholder="Confirm Password" required="required">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input class="text" type="text" id="username" name="username" v-model="usernameValue">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="text" type="email" id="email" name="email" v-model="emailValue">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input class="text" type="password" id="password" name="password" v-model="passwordValue">
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input class="text" type="password" id="password_confirmation" name="password_confirmation" v-model="confirmPasswordValue">
+                    </div>
                     <input type="submit" value="SIGNUP">
                 </form>
             </div>
@@ -24,12 +43,60 @@
     .main_div{
         padding: 40px;
     }
+    label{
+        color: #FFFFFF;
+    }
+    #app{
+        background: #76b852;
+    }
 </style>
 <script>
     export default {
         data(){
             return{
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                dismissSecs: 10,
+                dismissCountDown: 0,
+                showDismissibleAlert: false,
+                alertText: '',
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                usernameValue: '',
+                emailValue: '',
+                passwordValue: '',
+                confirmPasswordValue: ''
+            }
+        },
+        methods: {
+            validateInputs: function() {
+                if(this.checkIfAllFieldsAreFilled()&&this.validateEmail()&&this.validatePassword()){
+                    //this.$refs.regForm.submit();
+                    $('form').submit();
+                }
+            },
+            checkIfAllFieldsAreFilled:function() {
+                if(!(this.usernameValue!==''&&this.emailValue!==''&&this.passwordValue!==''&&this.confirmPasswordValue!=='')){
+                    console.log(this.usernameValue);
+                    this.alertText='One or more fields are empty! Please try again!';
+                    this.showDismissibleAlert=true;
+                    return false;
+                }
+                return true;
+            },
+            validateEmail:function () {
+                if(!this.emailValue.match(
+                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+                    this.alertText='The Entered email is invalid! Please try again!';
+                    this.showDismissibleAlert=true;
+                    return false;
+                }
+                return true;
+            },
+            validatePassword:function() {
+                if(this.passwordValue!==this.confirmPasswordValue){
+                    this.alertText='The password doesn\'t match the confirmation! Please try again!';
+                    this.showDismissibleAlert=true;
+                    return false;
+                }
+                return true;
             }
         }
     }
