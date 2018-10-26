@@ -57441,7 +57441,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*table, td, th {*/\n    /*border: 1px solid #000;*/\n    /*text-align: left;*/\n/*}*/\n\n/*table {*/\n    /*margin-top: 30px;*/\n    /*margin-left: 30px;*/\n    /*border-collapse: collapse;*/\n    /*width: 500px;*/\n/*}*/\n\n/*th, td {*/\n    /*padding: 15px;*/\n/*}*/\n", ""]);
+exports.push([module.i, "\n.table-wrapper{\n    margin-top:50px;\n    background-color: #fff;\n}\n.green-circle{\n    height: 35px;\n    width:35px;\n    border-radius: 20px;\n    background-color: green;\n    cursor:pointer;\n    outline: none;\n}\n.red-circle{\n    height: 35px;\n    width:35px;\n    border-radius: 20px;\n    background-color: red;\n    cursor:pointer;\n    outline: none;\n}\n", ""]);
 
 // exports
 
@@ -57477,31 +57477,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            checked: false,
             users: [],
             user: {
                 id: '',
                 username: '',
+                email: '',
                 verifiedByAdmin: ''
             }
         };
@@ -57521,8 +57505,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         verifyUser: function verifyUser(id) {
             var self = this;
-            var params = Object.assign({}, self.user);
-            axios.post('api/user/' + id, params).then(function () {
+            axios.post('api/user/' + id, { verifiedByAdmin: self.user.verifiedByAdmin }).then(function () {
                 self.fetchUserList();
             }).catch(function (error) {
                 console.log(error);
@@ -57539,82 +57522,58 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "table-wrapper" }, [
     _c(
-      "button",
+      "table",
       {
-        staticClass: "btn btn-default",
-        attrs: {
-          type: "button",
-          "data-toggle": "modal",
-          "data-target": "#exampleModal"
-        }
-      },
-      [_vm._v("\n        Launch demo modal\n    ")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "exampleModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
-          "aria-hidden": "true"
-        }
+        staticClass: "table table-striped",
+        attrs: { cellpadding: "10px", cellspacing: "0" }
       },
       [
+        _vm._m(0),
+        _vm._v(" "),
         _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(0),
+          "tbody",
+          _vm._l(_vm.users, function(user) {
+            return _c("tr", [
+              _c("td", [_c("strong", [_vm._v(_vm._s(user.username))])]),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c(
-                  "table",
-                  {
-                    staticClass: "table table-striped",
-                    attrs: { cellpadding: "10px", cellspacing: "0" }
-                  },
-                  [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.users, function(user) {
-                        return _c("tr", [
-                          _c("td", [
-                            _c("strong", [_vm._v(_vm._s(user.username))])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                value: "0",
-                                type: "checkbox",
-                                name: "verified"
-                              },
-                              domProps: { checked: _vm.checked },
-                              on: {
-                                change: function($event) {
-                                  _vm.verifyUser(user.id)
-                                }
-                              }
-                            })
-                          ])
-                        ])
-                      })
-                    )
-                  ]
-                )
+              _c("td", [_vm._v(_vm._s(user.email))]),
+              _vm._v(" "),
+              _c("td", [
+                _c("button", {
+                  class: user.verifiedByAdmin ? "green-circle" : "red-circle",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.verifyUser(user.id)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: user.verifiedByAdmin,
+                      expression: "user.verifiedByAdmin"
+                    }
+                  ],
+                  attrs: { type: "hidden", name: "verified" },
+                  domProps: { value: user.verifiedByAdmin },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(user, "verifiedByAdmin", $event.target.value)
+                    }
+                  }
+                })
               ])
             ])
-          ]
+          })
         )
       ]
     )
@@ -57625,34 +57584,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Verify unverified users")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Verify")])
       ])
