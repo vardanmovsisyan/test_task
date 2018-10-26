@@ -47,7 +47,7 @@
         color: #FFFFFF;
     }
     #app{
-        background: #76b852;
+        background: #b9bbbe;
     }
 </style>
 <script>
